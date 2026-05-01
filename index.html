@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Task Manager Pro</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #FFF9FA;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: auto;
+    }
+
+    h1 {
+      font-size: 2rem;
+      color: #2D1B22;
+      margin-bottom: 0.25rem;
+    }
+
+    p.sub {
+      color: #999;
+      font-size: 0.875rem;
+      margin-bottom: 2rem;
+    }
+
+    .add-box {
+      background: white;
+      border: 1px solid #fce4ec;
+      border-radius: 16px;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 10px rgba(230, 57, 175, 0.05);
+    }
+
+    .add-box input {
+      width: 100%;
+      border: none;
+      outline: none;
+      font-size: 0.9rem;
+      color: #2D1B22;
+      margin-bottom: 0.75rem;
+    }
+
+    .add-box input::placeholder {
+      color: #ccc;
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .priorities {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .prio-btn {
+      font-size: 0.75rem;
+      padding: 0.3rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid #eee;
+      background: white;
+      cursor: pointer;
+      color: #aaa;
+      transition: all 0.2s;
+    }
+
+    .prio-btn.active-low {
+      background: #dcfce7;
+      color: #16a34a;
+      border-color: #bbf7d0;
+    }
+
+    .prio-btn.active-medium {
+      background: #fef9c3;
+      color: #ca8a04;
+      border-color: #fef08a;
+    }
+
+    .prio-btn.active-high {
+      background: #fee2e2;
+      color: #dc2626;
+      border-color: #fecaca;
+    }
+
+    .add-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #E639AF;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .filters {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      font-size: 0.75rem;
+      padding: 0.4rem 0.9rem;
+      border-radius: 999px;
+      border: 1px solid #fce4ec;
+      background: white;
+      cursor: pointer;
+      color: #999;
+      transition: all 0.2s;
+    }
+
+    .filter-btn.active {
+      background: #E639AF;
+      color: white;
+      border-color: #E639AF;
+    }
+
+    .task-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .task {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: white;
+      border: 1px solid #fce4ec;
+      border-radius: 14px;
+      padding: 0.85rem 1rem;
+      transition: opacity 0.3s;
+    }
+
+    .task.done {
+      opacity: 0.5;
+    }
+
+    .check-btn {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 2px solid #fce4ec;
+      background: white;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+
+    .check-btn.checked {
+      background: #E639AF;
+      border-color: #E639AF;
+    }
+
+    .check-btn.checked::after {
+      content: '✓';
+      color: white;
+      font-size: 0.7rem;
+      font-weight: bold;
+    }
+
+    .task-text {
+      flex: 1;
+      font-size: 0.875rem;
+      color: #2D1B22;
+    }
+
+    .task.done .task-text {
+      text-decoration: line-through;
+    }
+
+    .badge {
+      font-size: 0.65rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      border: 1px solid;
+    }
+
+    .badge.low {
+      background: #dcfce7;
+      color: #16a34a;
+      border-color: #bbf7d0;
+    }
+
+    .badge.medium {
+      background: #fef9c3;
+      color: #ca8a04;
+      border-color: #fef08a;
+    }
+
+    .badge.high {
+      background: #fee2e2;
+      color: #dc2626;
+      border-color: #fecaca;
+    }
+
+    .del-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #ddd;
+      font-size: 1rem;
+      transition: color 0.2s;
+    }
+
+    .del-btn:hover {
+      color: #ef4444;
+    }
+
+    .progress {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.8rem;
+      color: #bbb;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 3rem;
+      color: #ccc;
+      font-size: 0.875rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Task Manager</h1>
+    <p class="sub">Stay organised, stay productive ✨</p>
+
+    <div class="add-box">
+      <input type="text" id="taskInput" placeholder="Add a new task..." />
+      <div class="row">
+        <div class="priorities">
+          <button class="prio-btn active-low" data-p="low" onclick="setPriority('low')">Low</button>
+          <button class="prio-btn active-medium" data-p="medium" onclick="setPriority('medium')">Medium</button>
+          <button class="prio-btn" data-p="high" onclick="setPriority('high')">High</button>
+        </div>
+        <button class="add-btn" onclick="addTask()">+</button>
+      </div>
+    </div>
+
+    <div class="filters">
+      <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
+      <button class="filter-btn" onclick="setFilter('low', this)">Low</button>
+      <button class="filter-btn" onclick="setFilter('medium', this)">Medium</button>
+      <button class="filter-btn" onclick="setFilter('high', this)">High</button>
+    </div>
+
+    <div class="task-list" id="taskList"></div>
+    <p class="progress" id="progress"></p>
+  </div>
+
+  <script>
+    let tasks = [
+      { id: 1, text: 'Learn HTML & CSS', priority: 'high', done: false },
+      { id: 2, text: 'Build portfolio website', priority: 'high', done: true },
+      { id: 3, text: 'Complete SQL course', priority: 'medium', done: false },
+      { id: 4, text: 'Read design articles', priority: 'low', done: false },
+    ];
+    let priority = 'medium';
+    let filter = 'all';
+
+    function setPriority(p) {
+      priority = p;
+      document.querySelectorAll('.prio-btn').forEach(b => {
+        b.className = 'prio-btn';
+        if (b.dataset.p === p) b.className = `prio-btn active-${p}`;
+      });
+    }
+
+    function setFilter(f, el) {
+      filter = f;
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      el.classList.add('active');
+      render();
+    }
+
+    function addTask() {
+      const input = document.getElementById('taskInput');
+      const text = input.value.trim();
+      if (!text) return;
+      tasks.push({ id: Date.now(), text, priority, done: false });
+      input.value = '';
+      render();
+    }
+
+    function toggleTask(id) {
+      tasks = tasks.map(t => t.id === id ? { ...t, done: !t.done } : t);
+      render();
+    }
+
+    function deleteTask(id) {
+      tasks = tasks.filter(t => t.id !== id);
+      render();
+    }
+
+    function render() {
+      const list = document.getElementById('taskList');
+      const filtered = filter === 'all' ? tasks : tasks.filter(t => t.priority === filter);
+      if (filtered.length === 0) {
+        list.innerHTML = '<div class="empty">No tasks here. Add one above!</div>';
+      } else {
+        list.innerHTML = filtered.map(t => `
+          <div class="task ${t.done ? 'done' : ''}">
+            <button class="check-btn ${t.done ? 'checked' : ''}" onclick="toggleTask(${t.id})"></button>
+            <span class="task-text">${t.text}</span>
+            <span class="badge ${t.priority}">${t.priority}</span>
+            <button class="del-btn" onclick="deleteTask(${t.id})">🗑</button>
+          </div>
+        `).join('');
+      }
+      const done = tasks.filter(t => t.done).length;
+      document.getElementById('progress').textContent = `${done} / ${tasks.length} tasks completed`;
+    }
+
+    document.getElementById('taskInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter') addTask();
+    });
+
+    render();
+  </script>
+</body>
+
+</html>
