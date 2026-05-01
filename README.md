@@ -14,7 +14,7 @@ A simple and responsive task management app for adding and organizing daily task
 - JavaScript
 
  Live Demo
-https://yourusername.github.io/todo-list-app
+https://github.com/sammie-doll/to-do-list-app/tree/main
 
 Author
 Mulalo Nevari
